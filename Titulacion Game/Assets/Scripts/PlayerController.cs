@@ -45,6 +45,9 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Usando el isGrounded del CharacterController se verifica si esta tocando el piso.
+    /// </summary>
     public void GroundDetection()
     {
         groundedPlayer = controller.isGrounded;
@@ -54,8 +57,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Se le da el input para que el jugador sepa con que se mueve.
+    /// También se le esta dando la fuerza necesaria para que se pueda mover dependiendo de la velocidad.
+    /// </summary>
     public void MovePlayer()
-    {
+        {
         Vector2 input = moveAction.ReadValue<Vector2>();
         Vector3 move = new Vector3(input.x, 0, input.y);
         move = move.x * cameraTransform.right.normalized + move.z * cameraTransform.forward.normalized;
@@ -64,6 +71,9 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Si se presiona el input de espacio y el jugador esta tocando el ground entonces se le da la fuerza necesaria para que de el salto.
+    /// </summary>
     public void JumpPlayer()
     {
         if (jumpAction.triggered && groundedPlayer)
@@ -75,6 +85,10 @@ public class PlayerController : MonoBehaviour
         controller.Move(playerVelocity * Time.deltaTime);
     }
 
+    /// <summary>
+    /// Se le esta dando la rotación dependiendo de hacía donde esta viendo la cámara,
+    /// usando un Lerp para que sea de manera mas suavizada y no sea instantaneó.
+    /// </summary>
     void PlayerRotate()
     {
         Quaternion targetRotation = Quaternion.Euler(0, cameraTransform.eulerAngles.y, 0);
