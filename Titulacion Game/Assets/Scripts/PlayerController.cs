@@ -25,6 +25,24 @@ public class PlayerController : MonoBehaviour
     private float bulletHitMissDistance = 25f;
 
 
+    [SerializeField]
+    private float animationSmoothTime  = 0.05f;
+    [SerializeField]
+    private float animationPlayerTransition = 0.15f;
+    [SerializeField]
+    private Transform aimTarget;
+    [SerializeField]
+    private float aimDistance = 10f;
+
+
+    [SerializeField]
+    private Vector3 HeadPosition;
+    [SerializeField]
+    private bool Crouch = false;
+    [SerializeField]
+    private bool canStand;
+
+
     private CharacterController controller;
     private PlayerInput playerInput;
     private Vector3 playerVelocity;
@@ -34,6 +52,20 @@ public class PlayerController : MonoBehaviour
     private InputAction moveAction;
     private InputAction jumpAction;
     private InputAction shootAction;
+    private InputAction CrouchAction;
+
+    private Animator animator;
+
+    int jumpAnimation;
+    int recoilAnimation;
+    int CrouchAnimation;
+
+
+    int moveXAnimationParameterId;
+    int moveZAnimationParameterId;
+
+    Vector2 currentAnimationBlendVector;
+    Vector2 animationVelocity;
 
 
     private void Awake()    {
@@ -43,8 +75,16 @@ public class PlayerController : MonoBehaviour
         moveAction = playerInput.actions["Move"];
         jumpAction = playerInput.actions["Jump"];
         shootAction = playerInput.actions["Shoot"];
+        CrouchAction = playerInput.actions["Crouch"];
 
         Cursor.lockState = CursorLockMode.Locked;
+
+        animator = GetComponent<Animator>();
+        jumpAnimation = Animator.StringToHash("Pistol Jump");
+        recoilAnimation = Animator.StringToHash("Pistol Shoot Recoil");
+        CrouchAnimation = Animator.StringToHash("Crouching Movement");
+        moveXAnimationParameterId = Animator.StringToHash("MoveX");
+        moveZAnimationParameterId = Animator.StringToHash("MoveZ");
     }
 
     private void OnEnable() {
@@ -60,7 +100,7 @@ public class PlayerController : MonoBehaviour
         MovePlayer();
         JumpPlayer();
         PlayerRotate();
-
+        Crouching();
     }
 
     private void ShootGun() {
@@ -76,6 +116,7 @@ public class PlayerController : MonoBehaviour
             bulletController.target = cameraTransform.position + cameraTransform.forward * bulletHitMissDistance;
             bulletController.hit = false;
         }
+        animator.CrossFade(recoilAnimation, animationPlayerTransition);
     }
 
     /// <summary>
@@ -83,8 +124,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void GroundDetection()   {
         groundedPlayer = controller.isGrounded;
-        if (groundedPlayer && playerVelocity.y < 0)
-        {
+        if (groundedPlayer && playerVelocity.y < 0) {
             playerVelocity.y = 0f;
         }
     }
@@ -95,10 +135,13 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void MovePlayer()    {
         Vector2 input = moveAction.ReadValue<Vector2>();
-        Vector3 move = new Vector3(input.x, 0, input.y);
+        currentAnimationBlendVector = Vector2.SmoothDamp(currentAnimationBlendVector, input, ref animationVelocity, animationSmoothTime);
+        Vector3 move = new Vector3(currentAnimationBlendVector.x, 0, currentAnimationBlendVector.y);
         move = move.x * cameraTransform.right.normalized + move.z * cameraTransform.forward.normalized;
         move.y = 0f;
         controller.Move(move * Time.deltaTime * playerSpeed);
+        animator.SetFloat(moveXAnimationParameterId, currentAnimationBlendVector.x);
+        animator.SetFloat(moveZAnimationParameterId, currentAnimationBlendVector.y);
 
     }
 
@@ -106,9 +149,9 @@ public class PlayerController : MonoBehaviour
     /// Si se presiona el input de espacio y el jugador esta tocando el ground entonces se le da la fuerza necesaria para que de el salto.
     /// </summary>
     public void JumpPlayer()    {
-        if (jumpAction.triggered && groundedPlayer)
-        {
+        if (jumpAction.triggered && groundedPlayer) {
             playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
+            animator.CrossFade(jumpAnimation, animationPlayerTransition);
         }
 
         playerVelocity.y += gravityValue * Time.deltaTime;
@@ -122,5 +165,24 @@ public class PlayerController : MonoBehaviour
     void PlayerRotate() {
         Quaternion targetRotation = Quaternion.Euler(0, cameraTransform.eulerAngles.y, 0);
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        aimTarget.position = cameraTransform.position + cameraTransform.forward * aimDistance;
+    }
+
+    void Crouching()    {
+        if (CrouchAction.triggered) {
+            if (Crouch == true)
+            {
+                Crouch = false;
+                animator.SetBool("Crouch", false);
+                animator.CrossFade(CrouchAnimation, animationPlayerTransition);
+
+            }
+            else
+            {
+                Crouch = true;
+                animator.SetBool("Crouch", true);
+            }
+        }
+
     }
 }
