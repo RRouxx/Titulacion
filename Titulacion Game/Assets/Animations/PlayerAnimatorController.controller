@@ -56,8 +56,32 @@ BlendTree:
   m_Name: Blend Tree
   m_Childs:
   - serializedVersion: 2
-    m_Motion: {fileID: -203655887218126122, guid: 162101e063e05e84097b0087ef6bf91d, type: 3}
-    m_Threshold: 0.44444445
+    m_Motion: {fileID: -203655887218126122, guid: f95b308f3de84b14f85d95ed36f9bea8, type: 3}
+    m_Threshold: 0.5138889
+    m_Position: {x: 1, y: 0}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: Blend
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: -203655887218126122, guid: a01b951dc7f470944b0d2d493dfb8bc1, type: 3}
+    m_Threshold: 0.5833334
+    m_Position: {x: 1, y: -1}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: Blend
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: -203655887218126122, guid: 4df64b2dc6037cf40a162bd82e38daff, type: 3}
+    m_Threshold: 0.6527778
+    m_Position: {x: 0, y: 1}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: Blend
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: -203655887218126122, guid: 2fd809f04394a9c4ba0bd7807f33e83a, type: 3}
+    m_Threshold: 0.7222222
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
     m_CycleOffset: 0
@@ -65,16 +89,32 @@ BlendTree:
     m_Mirror: 0
   - serializedVersion: 2
     m_Motion: {fileID: -203655887218126122, guid: 4df64b2dc6037cf40a162bd82e38daff, type: 3}
-    m_Threshold: 1
-    m_Position: {x: 1, y: 1}
-    m_TimeScale: 1
+    m_Threshold: 0.7916667
+    m_Position: {x: 0, y: -1}
+    m_TimeScale: -1
     m_CycleOffset: 0
-    m_DirectBlendParameter: MoveX
+    m_DirectBlendParameter: Blend
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: -203655887218126122, guid: a01b951dc7f470944b0d2d493dfb8bc1, type: 3}
+    m_Threshold: 0.86111116
+    m_Position: {x: -1, y: 1}
+    m_TimeScale: -1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: Blend
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: -203655887218126122, guid: 88cc6b6b0b182e447a5c7d4b20b34eb6, type: 3}
+    m_Threshold: 0.9305556
+    m_Position: {x: -1, y: 0}
+    m_TimeScale: -1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: Blend
     m_Mirror: 0
   m_BlendParameter: MoveX
   m_BlendParameterY: MoveZ
-  m_MinThreshold: 0.44444445
-  m_MaxThreshold: 1
+  m_MinThreshold: 0.5138889
+  m_MaxThreshold: 0.9305556
   m_UseAutomaticThresholds: 1
   m_NormalizedBlendValues: 0
   m_BlendType: 2
@@ -233,19 +273,19 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: MoveZ
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Crouch
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
