@@ -24,8 +24,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float rotationSpeed = 8f;
 
-    [SerializeField]
-    public float fltLife = 100f;
+    
 
     [Header("Animations")]
     [SerializeField]

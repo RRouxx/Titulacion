@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class PlayerReferee : MonoBehaviour
@@ -17,11 +18,21 @@ public class PlayerReferee : MonoBehaviour
     [SerializeField]
     public ActualTargetState GameState;
 
+    [Header ("Life")]
+    [SerializeField]
+    public float currentLife = 100f;
+    [SerializeField]
+    public float maxLife = 100f;
 
+
+    [Header("Life")]
+    [SerializeField]
+    public Image barLife;
+    public Text textLife;
+
+    [Header("Respawn")]
     public Transform respawnPoint;
     public float respawnTime = 5.0f;
-
-    public PlayerController scrPlayerController;
 
     /// <summary>
     /// Start in LIFE
@@ -36,10 +47,12 @@ public class PlayerReferee : MonoBehaviour
     /// </summary>
     void Update()
     {
+        RefreshUI();
+
         switch (GameState)
         {
             case ActualTargetState.LIFE:
-                if (scrPlayerController.fltLife <= 0f)
+                if (currentLife <= 0f)
                 {
                     GameState = ActualTargetState.DEATH;
 
@@ -56,12 +69,24 @@ public class PlayerReferee : MonoBehaviour
     private void RespawnPlayer()
     {
 
-        scrPlayerController.fltLife = 100f;
+        currentLife = 100f;
 
         transform.position = respawnPoint.position;
 
         gameObject.SetActive(true);
 
         GameState = ActualTargetState.LIFE;
+    }
+
+    private void RefreshUI()
+    {
+
+        barLife.fillAmount = currentLife / maxLife;
+        textLife.text = currentLife.ToString("f0");
+    }
+    public void TakeDamage(float damage)
+    {
+
+        currentLife -= damage;
     }
 }
